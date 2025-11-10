@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
   getTodos,
   getTodo,
@@ -6,13 +6,13 @@ import {
   updateTodo,
   deleteTodo,
   getPaginatedTodos,
-  getStats
-} from '../controllers/todo.controller';
+  getStats,
+} from "../controllers/todo.controller";
 import {
   validateTodoCreate,
   validateTodoUpdate,
-  validateId
-} from '../middlewares/validate.middleware';
+  validateId,
+} from "../middlewares/validate.middleware";
 
 const router = Router();
 
@@ -78,7 +78,7 @@ const router = Router();
  *                   items:
  *                     $ref: '#/components/schemas/Todo'
  */
-router.get('/', getTodos);
+router.get("/", getTodos);
 
 /**
  * @swagger
@@ -125,7 +125,7 @@ router.get('/', getTodos);
  *                     totalPages:
  *                       type: integer
  */
-router.get('/paginated', getPaginatedTodos);
+router.get("/paginated", getPaginatedTodos);
 
 /**
  * @swagger
@@ -153,7 +153,7 @@ router.get('/paginated', getPaginatedTodos);
  *                     pending:
  *                       type: integer
  */
-router.get('/stats', getStats);
+router.get("/stats", getStats);
 
 /**
  * @swagger
@@ -183,7 +183,7 @@ router.get('/stats', getStats);
  *       404:
  *         description: Todo not found
  */
-router.get('/:id', validateId, getTodo);
+router.get("/:id", validateId, getTodo);
 
 /**
  * @swagger
@@ -226,7 +226,7 @@ router.get('/:id', validateId, getTodo);
  *       400:
  *         description: Validation error
  */
-router.post('/', validateTodoCreate, createTodo);
+router.post("/", validateTodoCreate, createTodo);
 
 /**
  * @swagger
@@ -279,7 +279,7 @@ router.post('/', validateTodoCreate, createTodo);
  *       400:
  *         description: Validation error
  */
-router.put('/:id', validateId, validateTodoUpdate, updateTodo);
+router.put("/:id", validateId, validateTodoUpdate, updateTodo);
 
 /**
  * @swagger
@@ -329,7 +329,7 @@ router.put('/:id', validateId, validateTodoUpdate, updateTodo);
  *       400:
  *         description: Validation error
  */
-router.patch('/:id', validateId, validateTodoUpdate, updateTodo);
+router.patch("/:id", validateId, validateTodoUpdate, updateTodo);
 
 /**
  * @swagger
@@ -359,6 +359,6 @@ router.patch('/:id', validateId, validateTodoUpdate, updateTodo);
  *       404:
  *         description: Todo not found
  */
-router.delete('/:id', validateId, deleteTodo);
+router.delete("/:id", validateId, deleteTodo);
 
 export default router;

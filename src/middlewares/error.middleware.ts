@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
 
 export interface CustomError extends Error {
   statusCode?: number;
@@ -15,15 +15,15 @@ export const errorHandler = (
   error.message = err.message;
 
   // Log error
-  console.error('Error:', err);
+  console.error("Error:", err);
 
   // Default error
   let statusCode = error.statusCode || 500;
-  let message = error.message || 'Internal Server Error';
+  let message = error.message || "Internal Server Error";
 
   res.status(statusCode).json({
     success: false,
     error: message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
 };

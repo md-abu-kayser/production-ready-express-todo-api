@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/production-ready-express-todo-api.git"
+    "url": "git+https://github.com/md-abu-kayser/production-ready-express-todo-api.git"
   },
   "keywords": [
     "express",
@@ -27,12 +27,12 @@
     "swagger",
     "documentation"
   ],
-  "author": "Your Name",
+  "author": "Md Abu Kayser - Full-Stack Engineer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/your-username/production-ready-express-todo-api/issues"
+    "url": "https://github.com//production-ready-express-todo-api/issues"
   },
-  "homepage": "https://github.com/your-username/production-ready-express-todo-api#readme",
+  "homepage": "https://github.com/md-abu-kayser/production-ready-express-todo-api#readme",
   "devDependencies": {
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",
