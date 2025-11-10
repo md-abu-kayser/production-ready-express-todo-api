@@ -1,39 +1,103 @@
-import express, { Application, Request, Response } from "express";
-import fs from "fs";
-import path from "path";
+import express, { Application, Request, Response } from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import compression from 'compression';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+import swaggerUi from 'swagger-ui-express';
+import todoRoutes from './routes/todo.routes';
+import { notFoundHandler } from './middlewares/not-found.middleware';
+import { errorHandler } from './middlewares/error.middleware';
+import { specs } from './swagger/swagger';
 
-//
-const app: Application = express();
+class App {
+  public app: Application;
 
-const filepath = path.join(__dirname, "../db/todo.json");
+  constructor() {
+    this.app = express();
+    this.initializeMiddlewares();
+    this.initializeRoutes();
+    this.initializeErrorHandling();
+  }
 
-// ToDo Home
-app.get("/", (req: Request, res: Response) => {
-  res.send("I am learning express with TypeScript");
-});
+  private initializeMiddlewares(): void {
+    // Security middleware
+    this.app.use(helmet());
 
-// GET All ToDos
-app.get("/todos", (req: Request, res: Response) => {
-  const data = fs.readFileSync(filepath, { encoding: "utf-8" });
-  console.log(data);
-  res.json(data);
-});
+    // CORS middleware
+    this.app.use(cors({
+      origin: process.env.CORS_ORIGIN || '*',
+      credentials: true
+    }));
 
-// POST ToDo
-app.post("/todos/create-todo", (req: Request, res: Response) => {
-  const data = req.body;
-  console.log(data);
-  res.send("create todo");
-});
+    // Compression middleware
+    this.app.use(compression());
 
-// [app]-[express.json()]-[todosRouter]-[Root Route "/"]-[GET "/todos"]-[POST Create ToDo]
-//[todosRouter]-[get all todos /todos GET]-[create todo /todos/create-todo POST todo]
+    // Rate limiting
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+      message: {
+        success: false,
+        error: 'Too many requests from this IP, please try again later.'
+      }
+    });
+    this.app.use(limiter);
 
-export default app;
+    // Body parsing middleware
+    this.app.use(express.json({ limit: '10kb' }));
+    this.app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-/**
- * Basic File Structure.
- * Server - server handling like - starting, closing, error handling of server. only related to server
- * App File - routing handle, middleware, route related error.
- * App Folder - app business logic handling like create read update delete, database related works
- */
+    // Logging middleware
+    if (process.env.NODE_ENV === 'development') {
+      this.app.use(morgan('dev'));
+    } else {
+      this.app.use(morgan('combined'));
+    }
+
+    // Static files
+    this.app.use(express.static('public'));
+  }
+
+  private initializeRoutes(): void {
+    // Health check route
+    this.app.get('/health', (_req: Request, res: Response) => {
+      res.status(200).json({
+        success: true,
+        message: 'Server is healthy',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+      });
+    });
+
+    // API routes
+    this.app.use('/api/todos', todoRoutes);
+
+    // Swagger documentation
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+      explorer: true,
+      customCss: '.swagger-ui .topbar { display: none }',
+      customSiteTitle: 'Todo API Documentation'
+    }));
+
+    // Home route
+    this.app.get('/', (_req: Request, res: Response) => {
+      res.json({
+        success: true,
+        message: 'Welcome to Todo API',
+        documentation: '/api-docs',
+        endpoints: {
+          todos: '/api/todos',
+          health: '/health'
+        }
+      });
+    });
+  }
+
+  private initializeErrorHandling(): void {
+    this.app.use(notFoundHandler);
+    this.app.use(errorHandler);
+  }
+}
+
+export default new App().app;

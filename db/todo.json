@@ -4,27 +4,31 @@
     "title": "prisma",
     "body": "Learning prisma",
     "completed": false,
-    "createdAt": "5/18/2025, 1:25:02 AM"
+    "createdAt": "2024-05-18T01:25:02.000Z",
+    "updatedAt": "2024-05-18T01:25:02.000Z"
   },
   {
     "id": 2,
     "title": "typescript",
     "body": "learning node",
     "completed": false,
-    "createdAt": "5/18/2025, 1:25:12 AM"
+    "createdAt": "2024-05-18T01:25:12.000Z",
+    "updatedAt": "2024-05-18T01:25:12.000Z"
   },
   {
     "id": 3,
     "title": "express",
     "body": "Learning advanced express",
     "completed": false,
-    "createdAt": "5/29/2025, 5:55:16 AM"
+    "createdAt": "2024-05-29T05:55:16.000Z",
+    "updatedAt": "2024-05-29T05:55:16.000Z"
   },
   {
     "id": 4,
     "title": "mongodb",
     "body": "learning mongodb",
     "completed": false,
-    "createdAt": "5/29/2025, 5:55:46 AM"
+    "createdAt": "2024-05-29T05:55:46.000Z",
+    "updatedAt": "2024-05-29T05:55:46.000Z"
   }
 ]
