@@ -309,7 +309,7 @@ router.put("/:id", validateId, validateTodoUpdate, updateTodo);
  *                 description: The body/description of the todo
  *               completed:
  *                 type: boolean
- *                 description: The completion status
+ *                 description: The Completion Status
  *     responses:
  *       200:
  *         description: The todo was successfully updated
